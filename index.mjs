@@ -9,7 +9,6 @@ const analyzeCsv = (csv) => {
 
   const headerColumns = lines[0];
   const unknownScIndex = headerColumns.indexOf('0.0.0');
-  console.log(headerColumns, unknownScIndex);
 
   /* Success criteria for WCAG conformance level AA */
   const aa = [
@@ -125,6 +124,7 @@ const init = async () => {
   const request = await fetch(csvUrl);
   const response = await request.text();
   const { records, totalsMap } = analyzeCsv(response);
+  const noscript = document.querySelector('noscript#generated');
 
   // Create a table with a row for each success criterium
   const tableBody = Array.from(totalsMap.entries())
@@ -135,9 +135,15 @@ const init = async () => {
       // this succcess criterium.
       const row = document.createElement('tr');
       const headingCell = document.createElement('th');
-      headingCell.textContent = `${sc} ${successCriteriaNumberMap.get(sc).nl.title}`;
+      const span = document.createElement('span');
+      span.classList.add('nlds-toc-label');
+      span.textContent = sc;
+      headingCell.appendChild(span);
+      headingCell.appendChild(document.createTextNode(` ${successCriteriaNumberMap.get(sc).nl.title}`));
 
       const dataCell = document.createElement('td');
+      dataCell.classList.add('utrecht-number-data');
+      dataCell.classList.add('nlds-numeric-table-cell');
       dataCell.textContent = formatPercentage(scRecords.length / records.length);
 
       // Create a link to relevant WCAG page on the NL Design System website
@@ -158,9 +164,10 @@ const init = async () => {
   const table = document.createElement('table');
   const tableHeader = document.createElement('thead');
   const tableHeaderCell1 = document.createElement('th');
-  tableHeaderCell1.textContent = 'Success criterium';
+  tableHeaderCell1.textContent = 'Successcriterium';
   const tableHeaderCell2 = document.createElement('th');
   tableHeaderCell2.textContent = 'Websites met problemen';
+  tableHeaderCell2.classList.add('nlds-numeric-table-header-cell');
   const tableHeaderCell3 = document.createElement('th');
   tableHeaderCell3.textContent = 'Link';
   tableHeader.appendChild(tableHeaderCell1);
@@ -168,7 +175,7 @@ const init = async () => {
   tableHeader.appendChild(tableHeaderCell3);
   table.appendChild(tableHeader);
   table.appendChild(tableBody);
-  document.body.appendChild(table);
+  noscript.parentNode.insertBefore(table, noscript);
 
   // Create a section for each success criterium
   const fragment = Array.from(totalsMap.entries()).reduce((fragment, [sc, scRecords]) => {
@@ -177,7 +184,11 @@ const init = async () => {
     const section = document.createElement('section');
     section.id = sc;
     const heading = document.createElement('h3');
-    heading.textContent = `${sc} ${successCriteriaNumberMap.get(sc).nl.title}`;
+    const span = document.createElement('span');
+    span.classList.add('nlds-toc-label');
+    span.textContent = sc;
+    heading.appendChild(span);
+    heading.appendChild(document.createTextNode(` ${successCriteriaNumberMap.get(sc).nl.title}`));
 
     const p2 = document.createElement('p');
     p2.textContent = `${scRecords.length} van de ${
@@ -205,8 +216,14 @@ const init = async () => {
       const listItem = document.createElement('li');
       const link = document.createElement('a');
       link.href = `https://www.toegankelijkheidsverklaring.nl/register/${record[0]}`;
-      link.textContent = `Verklaring van ${record[1]} voor ${record[11]}`;
+      link.appendChild(document.createTextNode(`Verklaring van ${record[1]}`));
       listItem.appendChild(link);
+      listItem.appendChild(document.createTextNode(' voor '));
+      const siteLink = document.createElement('a');
+      siteLink.classList.add('utrecht-url-data');
+      siteLink.href = record[11];
+      siteLink.appendChild(document.createTextNode(record[11]));
+      listItem.appendChild(siteLink);
       list.appendChild(listItem);
       return list;
     }, list);
@@ -217,13 +234,12 @@ const init = async () => {
     return fragment;
   }, document.createDocumentFragment());
 
-  document.body.appendChild(fragment);
+  noscript.parentNode.insertBefore(fragment, noscript);
 };
 
 const annotateDownloadLinks = async () => {
   Array.from(document.querySelectorAll('a[download]:any-link:not([data-size]')).forEach(async (link) => {
     const response = await fetch(link.href, { method: 'HEAD' });
-    console.log(response);
     const size = response.headers.get('Content-Length');
     link.setAttribute('data-size', formatMb(size));
   });
