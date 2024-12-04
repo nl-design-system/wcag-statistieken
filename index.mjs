@@ -135,11 +135,17 @@ const init = async () => {
       // this succcess criterium.
       const row = document.createElement('tr');
       const headingCell = document.createElement('th');
+      headingCell.id = crypto.randomUUID();
       const span = document.createElement('span');
       span.classList.add('nlds-toc-label');
       span.textContent = sc;
       headingCell.appendChild(span);
-      headingCell.appendChild(document.createTextNode(` ${successCriteriaNumberMap.get(sc).nl.title}`));
+      row.appendChild(headingCell);
+
+      const headingCell2 = document.createElement('th');
+      headingCell2.id = crypto.randomUUID();
+      headingCell2.appendChild(document.createTextNode(successCriteriaNumberMap.get(sc).nl.title));
+      row.appendChild(headingCell2);
 
       const dataCell = document.createElement('td');
       dataCell.classList.add('utrecht-number-data');
@@ -149,11 +155,12 @@ const init = async () => {
       // Create a link to relevant WCAG page on the NL Design System website
       const actionCell = document.createElement('td');
       const link = document.createElement('a');
+      link.id = crypto.randomUUID();
       link.href = `#${sc}`;
-      link.textContent = `Bekijk details van ${sc}`;
+      link.textContent = `Details`;
+      link.setAttribute('aria-labelledby', [link.id, headingCell2.id].join(' '));
       actionCell.appendChild(link);
 
-      row.appendChild(headingCell);
       row.appendChild(dataCell);
       row.appendChild(actionCell);
 
@@ -165,6 +172,7 @@ const init = async () => {
   const tableHeader = document.createElement('thead');
   const tableHeaderCell1 = document.createElement('th');
   tableHeaderCell1.textContent = 'Successcriterium';
+  tableHeaderCell1.colSpan = 2;
   const tableHeaderCell2 = document.createElement('th');
   tableHeaderCell2.textContent = 'Websites met problemen';
   tableHeaderCell2.classList.add('nlds-numeric-table-header-cell');
@@ -190,6 +198,7 @@ const init = async () => {
     heading.appendChild(span);
     heading.appendChild(document.createTextNode(` ${successCriteriaNumberMap.get(sc).nl.title}`));
 
+    section.appendChild(heading);
     const p2 = document.createElement('p');
     p2.textContent = `${scRecords.length} van de ${
       records.length
@@ -197,15 +206,6 @@ const init = async () => {
       scRecords.length / records.length,
     )}.`;
     section.appendChild(p2);
-
-    // Create a link to relevant WCAG page on the NL Design System website
-    const p = document.createElement('p');
-    const link = document.createElement('a');
-    link.href = `https://nldesignsystem.nl/wcag/${sc}`;
-    link.textContent = `Lees meer over WCAG ${sc} bij NL Design System.`;
-    p.appendChild(link);
-    section.appendChild(heading);
-    section.appendChild(p);
 
     const details = document.createElement('details');
     const summary = document.createElement('summary');
@@ -229,6 +229,14 @@ const init = async () => {
     }, list);
     details.appendChild(list);
     section.appendChild(details);
+
+    // Create a link to relevant WCAG page on the NL Design System website
+    const p = document.createElement('p');
+    const link = document.createElement('a');
+    link.href = `https://nldesignsystem.nl/wcag/${sc}`;
+    link.textContent = `Lees meer over WCAG ${sc} bij NL Design System.`;
+    p.appendChild(link);
+    section.appendChild(p);
 
     fragment.appendChild(section);
     return fragment;
