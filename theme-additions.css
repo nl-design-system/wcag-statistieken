@@ -1,0 +1,30 @@
+.nlds-theme {
+  --utrecht-root-font-family: "Fira Sans", sans-serif;
+  --nlds-typography-default-font-family: "Fira Sans", sans-serif;
+  --utrecht-page-body-content-padding-inline-start: 1em;
+  --utrecht-page-footer-padding-inline-start: 1em;
+  --utrecht-page-body-content-padding-inline-end: 1em;
+  --utrecht-page-body-content-padding-block-end: 4em;
+  --utrecht-page-footer-padding-inline-end: 1em;
+}
+
+.nlds-text-content {
+  max-inline-size: 38em;
+  text-wrap: pretty;
+  margin-inline: auto;
+}
+
+.utrecht-html .nlds-numeric-table-header-cell,
+.nlds-numeric-table-header-cell {
+  text-align: right;
+}
+
+.utrecht-html .nlds-numeric-table-cell,
+.nlds-numeric-table-cell {
+  text-align: right;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.nlds-toc-label {
+  font-variant-numeric: lining-nums tabular-nums;
+}
