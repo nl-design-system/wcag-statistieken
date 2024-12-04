@@ -169,7 +169,7 @@ const init = async () => {
   document.body.appendChild(table);
 
   // Create a section for each success criterium
-  const fragment = totalsMap.entries().reduce((fragment, [sc, scRecords]) => {
+  const fragment = Array.from(totalsMap.entries()).reduce((fragment, [sc, scRecords]) => {
     // Create a section with an ID, so you can create fragment identifier links to
     // this succcess criterium.
     const section = document.createElement('section');
