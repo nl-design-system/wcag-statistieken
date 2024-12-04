@@ -76,6 +76,8 @@ const analyzeCsv = (csv) => {
   // Exclude the header row
   let records = lines.slice(1);
 
+  records = records.filter((record) => record[6] === 'onderbouwing toereikend');
+
   // Start with an empty array for every success criterium
   const totalsMap = new Map(aa.map((sc) => [sc, []]));
 
