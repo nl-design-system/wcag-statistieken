@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="nl" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>WCAG statistieken</title>
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@utrecht/component-library-react"
+    /> -->
+    <script type="importmap">
+      {
+        "imports": {
+          "csv-parse/": "https://cdn.jsdelivr.net/npm/csv-parse/",
+          "lodash-es/": "https://cdn.jsdelivr.net/npm/",
+          "@utrecht/": "https://cdn.jsdelivr.net/npm/@utrecht/",
+          "@nl-design-system/": "https://cdn.jsdelivr.net/npm/@nl-design-system/",
+          "@nl-design-system-community/": "https://cdn.jsdelivr.net/npm/@nl-design-system-community/"
+        }
+      }
+    </script>
+    <style>
+      :any-link[data-size]::after {
+        content: ' (' attr(data-size) ')';
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WCAG statistieken</h1>
+    <section>
+      <h2>Over deze statistieken</h2>
+      <p>
+        Een groot gedeelte van de toegankelijkheidsrapporten van de afgelopen jaren zijn meegenomen in de beoordeling.
+        Rapporten waarbij de succescriteria niet per stuk zijn gerapporteerd, zijn niet meegenomen in de statistieken.
+      </p>
+      <p>
+        Download ons CSV bronbestand hier:
+        <a href="data/register_download_20241130.csv" download
+          ><utrecht-url-data>data/register_download_20241130.csv</utrecht-url-data></a
+        >, als je de analyse wilt controleren.
+      </p>
+      <p>
+        Je kunt de broncode van dit project vinden op GitHub:
+        <a href="https://github.com/nl-design-system/wcag-statistieken"
+          ><utrecht-url-data>nl-design-system/wcag-statistieken</utrecht-url-data></a
+        >.
+      </p>
+    </section>
+    <h2>Overzicht per WCAG succescriterium</h2>
+    <noscript
+      ><p>
+        De statistieken worden met JavaScript getoond. Je moet eerst JavaScript aan zetten om deze pagina te bekijken.
+      </p></noscript
+    >
+    <script src="index.mjs" type="module" async></script>
+  </body>
+</html>
